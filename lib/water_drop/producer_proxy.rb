@@ -44,6 +44,11 @@ module WaterDrop
       @attempts = 0
     end
 
+    # Shuts down the producer
+    def shutdown
+      @producer.shutdown if @producer
+    end
+
     private
 
     # Refreshes last usage value with current time
@@ -65,7 +70,7 @@ module WaterDrop
 
     # Resets a producer so a new one will be created once requested
     def reload!
-      @producer.shutdown if @producer
+      shutdown
       @producer = nil
     end
   end

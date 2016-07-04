@@ -89,6 +89,29 @@ RSpec.describe WaterDrop::ProducerProxy do
       end
     end
 
+    describe '#shutdown' do
+      let(:kafka) { double }
+      let(:producer) { double }
+
+      before do
+        expect(Kafka)
+          .to receive(:new)
+          .and_return(kafka)
+        expect(subject)
+          .to receive(:producer)
+          .and_call_original
+        expect(kafka)
+          .to receive(:producer)
+          .and_return(producer)
+        subject.send :producer
+      end
+      it 'invokes #shutdown on the producer' do
+        expect(producer)
+          .to receive(:shutdown)
+        subject.shutdown
+      end
+    end
+
     describe '#touch' do
       let(:now) { rand }
 

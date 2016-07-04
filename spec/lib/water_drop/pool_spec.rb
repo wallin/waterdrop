@@ -18,6 +18,15 @@ RSpec.describe WaterDrop::Pool do
     end
   end
 
+  describe '.pool.shutdown' do
+    it 'sends shutdown to producers in the pool' do
+      expect(subject).to receive(:pool).and_return(pool)
+      expect(pool).to receive(:shutdown).and_yield(producer)
+      expect(producer).to receive(:shutdown)
+      subject.pool.shutdown(&:shutdown)
+    end
+  end
+
   describe '.pool' do
     let(:config) { double }
     let(:connection_pool_size) { double }
